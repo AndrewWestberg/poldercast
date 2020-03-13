@@ -1,4 +1,7 @@
-use crate::{Address, Id, Logs, Proximity, Record, Subscription, Subscriptions};
+use crate::{
+    topic::PriorityScore, topic::ProximityScore, Address, Id, Logs, Proximity, Record,
+    Subscription, Subscriptions,
+};
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
@@ -118,7 +121,27 @@ impl NodeProfile {
     /// This is based on the subscription. The more 2 nodes have subscription
     /// in common the _closer_ they are.
     pub fn proximity(&self, other: &Self) -> Proximity {
-        self.subscriptions.proximity_to(&other.subscriptions)
+        let prox = self.subscriptions.proximity_to(&other.subscriptions);
+
+        let Proximity {
+            proximity,
+            priority,
+        } = prox;
+        let ProximityScore(mut proximity_score) = proximity;
+        let PriorityScore(priority_score) = priority;
+
+        let Id(self_id) = self.id();
+        let Id(other_id) = other.id();
+
+        if &self_id[0..18] == &other_id[0..18] {
+            proximity_score += 10000;
+            Proximity {
+                proximity: ProximityScore(proximity_score),
+                priority: PriorityScore(priority_score),
+            }
+        } else {
+            prox
+        }
     }
 
     pub fn check(&self) -> bool {

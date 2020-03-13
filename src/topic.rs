@@ -30,15 +30,15 @@ pub struct Subscription {
 pub struct Subscriptions(BTreeSet<Subscription>);
 
 #[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Debug)]
-pub struct ProximityScore(usize);
+pub struct ProximityScore(pub usize);
 
 #[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Debug)]
-pub struct PriorityScore(usize);
+pub struct PriorityScore(pub usize);
 
 #[derive(Copy, Clone, Debug)]
 pub struct Proximity {
-    priority: PriorityScore,
-    proximity: ProximityScore,
+    pub priority: PriorityScore,
+    pub proximity: ProximityScore,
 }
 
 impl Topic {

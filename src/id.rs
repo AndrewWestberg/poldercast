@@ -13,7 +13,7 @@ use std::{fmt, str::FromStr};
 /// and to occupy a circular value space.
 ///
 #[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
-pub struct Id([u8; ID_LEN]);
+pub struct Id(pub [u8; ID_LEN]);
 
 const ID_LEN: usize = 24;
 
