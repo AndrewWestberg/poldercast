@@ -136,7 +136,7 @@ impl Node {
         }
     }
 
-    pub(crate) fn info(&self) -> &NodeInfo {
+    pub fn info(&self) -> &NodeInfo {
         &self.profile().info()
     }
 
